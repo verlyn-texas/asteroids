@@ -6,7 +6,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{70261382-45EB-0236-7EA2-855FCD841B8F}</ProjectGuid>
+    <ProjectGuid>{3EA5169F-7459-63CD-8E5C-1E28FF4F7D84}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -46,6 +46,8 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\CameraController.cs" />
+     <Compile Include="Assets\CourseSetup.cs" />
+     <Compile Include="Assets\JetControl2.cs" />
      <Compile Include="Assets\JetControls.cs" />
      <Compile Include="Assets\Rocks and Boulders 2\Shaders\Desaturate\DesaturateEffect.cs" />
      <Compile Include="Assets\Rocks and Boulders 2\Shaders\RotateGameObject.cs" />

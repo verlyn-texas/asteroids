@@ -1,0 +1,17 @@
+/Users/verlynfischer/Documents/Github/verlyn-texas/asteroids/Temp/bin/Debug/Assembly-CSharp.dll.mdb
+/Users/verlynfischer/Documents/Github/verlyn-texas/asteroids/Temp/bin/Debug/Assembly-CSharp.dll
+/Users/verlynfischer/Documents/Github/verlyn-texas/asteroids/obj/Debug/Assembly-CSharp.dll
+/Users/verlynfischer/Documents/Github/verlyn-texas/asteroids/obj/Debug/Assembly-CSharp.dll.mdb
+/Users/verlynfischer/Documents/Github/verlyn-texas/asteroids/Temp/bin/Debug/UnityEngine.dll
+/Users/verlynfischer/Documents/Github/verlyn-texas/asteroids/Temp/bin/Debug/UnityEditor.dll
+/Users/verlynfischer/Documents/Github/verlyn-texas/asteroids/Temp/bin/Debug/UnityEngine.UI.dll
+/Users/verlynfischer/Documents/Github/verlyn-texas/asteroids/Temp/bin/Debug/UnityEngine.Networking.dll
+/Users/verlynfischer/Documents/Github/verlyn-texas/asteroids/Temp/bin/Debug/Mono.Cecil.dll
+/Users/verlynfischer/Documents/Github/verlyn-texas/asteroids/Temp/bin/Debug/Unity.SerializationLogic.dll
+/Users/verlynfischer/Documents/Github/verlyn-texas/asteroids/Temp/bin/Debug/Unity.DataContract.dll
+/Users/verlynfischer/Documents/Github/verlyn-texas/asteroids/Temp/bin/Debug/ICSharpCode.NRefactory.dll
+/Users/verlynfischer/Documents/Github/verlyn-texas/asteroids/Temp/bin/Debug/Unity.UNetWeaver.dll
+/Users/verlynfischer/Documents/Github/verlyn-texas/asteroids/Temp/bin/Debug/Unity.UNetWeaver.dll.mdb
+/Users/verlynfischer/Documents/Github/verlyn-texas/asteroids/Temp/bin/Debug/Unity.CecilTools.dll
+/Users/verlynfischer/Documents/Github/verlyn-texas/asteroids/Temp/bin/Debug/Mono.Cecil.Pdb.dll
+/Users/verlynfischer/Documents/Github/verlyn-texas/asteroids/Temp/bin/Debug/Mono.Cecil.Mdb.dll

@@ -17,6 +17,7 @@ public class JetControl2 : MonoBehaviour {
 
 	//Other Public Parameters
 	public Text displayText;
+	public Text boundaryText;
 
 	//Private variables
 	private Rigidbody rb;
@@ -29,6 +30,9 @@ public class JetControl2 : MonoBehaviour {
 	private Vector3 towardVectorGlobal;
 	private Vector3 towardVectorGlobalAtMag;
 	private Vector3 rotatedVelVector;
+	private Ray CollisionRay;
+	private RaycastHit hitInfo;
+	private MeshRenderer mr;
 
 	// Use this for initialization
 	void Start () {
@@ -41,9 +45,10 @@ public class JetControl2 : MonoBehaviour {
 	
 		// Get joystick values
 
-		float moveRoll = Input.GetAxis ("Roll"); 
+		float moveYaw = Input.GetAxis ("Yaw"); 
 		float movePitch = Input.GetAxis ("Pitch");
 		float moveThrust = Input.GetAxis ("Thrust");
+		float moveRoll = Input.GetAxis ("Roll");
 		bool rocketStop = Input.GetKey(KeyCode.Y);
 
 		//General Algorithm
@@ -64,7 +69,7 @@ public class JetControl2 : MonoBehaviour {
 
 		if (shipspeed < 0.0001f) {
 			rb.angularDrag = shipAngularDrag; //Validated
-			rotationVector = torqueFactor * new Vector3 (movePitch, moveRoll, 0); //Validated
+			rotationVector = torqueFactor * new Vector3 (movePitch, moveYaw, moveRoll); //Validated
 			rb.AddRelativeTorque (rotationVector); //Validated
 			rb.AddRelativeForce (thrustFactor * Vector3.forward * moveThrust); //Validated
 		} else {
@@ -76,18 +81,41 @@ public class JetControl2 : MonoBehaviour {
 			// Code below handles changing velocity vector
 			// ERROR - ship speed is changing with a change in direction.
 			shipspeed = Vector3.Magnitude (rb.velocity);
-			towardVectorLocal = new Vector3 (moveRoll, movePitch, 0);
+			towardVectorLocal = new Vector3 (moveYaw, movePitch, 0.0f);
 			towardVectorGlobal = transform.TransformVector (towardVectorLocal) / 8; //8 neccessary to accomodate ship scaling.
 			towardVectorGlobalAtMag = shipspeed * Vector3.Normalize (towardVectorGlobal);
 			rotatedVelVector = Vector3.RotateTowards (rb.velocity, towardVectorGlobalAtMag, 1.570796f * maxTurnFactor/90.0f, 0.0f);
 			thrustVector = rotatedVelVector - rb.velocity;
 			rb.AddForce (thrustVector);
+			rotationVector = torqueFactor * new Vector3 (0.0f, 0.0f, moveRoll);
+			rb.AddRelativeTorque (rotationVector);
 		}
 
 		//Add "all stop" function
 		if (rocketStop) {
 			rb.AddForce (-1 * rb.velocity, ForceMode.VelocityChange);
 		}
+
+		//Check for Boundary Proximity
+
+			
+
+		CollisionRay = new Ray(transform.position,rb.transform.forward);
+		if (Physics.Raycast (CollisionRay, out hitInfo, 1500)) {
+			if (hitInfo.collider.tag == "boundary"){
+				boundaryText.text = "Boundary Distance: " + hitInfo.distance;
+				mr = hitInfo.transform.gameObject.GetComponent<MeshRenderer> ();
+				if (hitInfo.distance < 150) {
+					mr.enabled = true;
+				} else {
+					mr.enabled = false;
+				}
+			}
+		}
+
+
+
+
 
 		// Display Information at run-time
 		//displayText.text = "moveThrust: " + moveThrust.ToString() + " moveRoll: " + moveRoll.ToString() + " Speed: "+ Vector3.Magnitude(rb.velocity).ToString();

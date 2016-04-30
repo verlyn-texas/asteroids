@@ -46,9 +46,11 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\CameraController.cs" />
+     <Compile Include="Assets\Controller Tester\Scripts\DetectUnknownControllerMappings.cs" />
      <Compile Include="Assets\CourseSetup.cs" />
      <Compile Include="Assets\JetControl2.cs" />
      <Compile Include="Assets\JetControls.cs" />
+     <Compile Include="Assets\Proximity.cs" />
      <Compile Include="Assets\Rocks and Boulders 2\Shaders\Desaturate\DesaturateEffect.cs" />
      <Compile Include="Assets\Rocks and Boulders 2\Shaders\RotateGameObject.cs" />
      <Compile Include="Assets\Rocks and Boulders 2\Standard Assets\Character Controllers\Sources\Scripts\MouseLook.cs" />

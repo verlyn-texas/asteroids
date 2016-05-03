@@ -16,15 +16,18 @@ public class JetControl2 : MonoBehaviour {
 	public float thrustFactorHighSpeed;
 
 	//Other Public Parameters
-	public Text displayText;
+	public Text speedText;
 	public Text boundaryText;
+	public Text distText;
+	public Text timeText;
+	public Text powerText;
+	public GameObject expl;
 
 	//Private variables
 	private Rigidbody rb;
 	private float shipspeed;
 	private Vector3 rotationVector;
 	private Vector3 thrustVector;
-	private float speedchange;
 	private Vector3 velVector;
 	private Vector3 towardVectorLocal;
 	private Vector3 towardVectorGlobal;
@@ -33,11 +36,30 @@ public class JetControl2 : MonoBehaviour {
 	private Ray CollisionRay;
 	private RaycastHit hitInfo;
 	private MeshRenderer mr;
+	private float powerUsed;
+	private Vector3 previousLocation;
+	private Vector3 currentLocation;
+	private float distanceTraveled;
+	private int minutes;
+	private int seconds;
+	private Transform thisExpl;
+
 
 	// Use this for initialization
 	void Start () {
 		rb = GetComponent<Rigidbody> ();
+		previousLocation = rb.position;
 		rb.AddRelativeForce (new Vector3(0,0,5.0f),ForceMode.VelocityChange);
+	}
+
+	//Detect and react to collission
+	void OnTriggerEnter (Collider other)
+	{
+		if (other.gameObject.CompareTag ("Rock"))
+		{
+			Instantiate (expl, other.transform.position, other.transform.rotation);
+			other.gameObject.SetActive(false);
+		}
 	}
 	
 	// Update is called once per frame
@@ -72,11 +94,13 @@ public class JetControl2 : MonoBehaviour {
 			rotationVector = torqueFactor * new Vector3 (movePitch, moveYaw, moveRoll); //Validated
 			rb.AddRelativeTorque (rotationVector); //Validated
 			rb.AddRelativeForce (thrustFactor * Vector3.forward * moveThrust); //Validated
+			powerUsed = powerUsed + Vector3.Magnitude(thrustFactor * Vector3.forward * moveThrust);
 		} else {
 			rb.angularDrag = shipAngularDragHighSpeed; //Validated
 			rotationVector = torqueFactorHighSpeed * Vector3.Cross (Vector3.Normalize (rb.velocity), Vector3.Normalize (rb.transform.forward)); //Validated
 			rb.AddTorque (-1*rotationVector); //Validated
 			rb.AddRelativeForce (thrustFactorHighSpeed * Vector3.forward * moveThrust); //Validated
+			powerUsed = powerUsed + Vector3.Magnitude(thrustFactorHighSpeed * Vector3.forward * moveThrust);
 
 			// Code below handles changing velocity vector
 			// ERROR - ship speed is changing with a change in direction.
@@ -87,6 +111,7 @@ public class JetControl2 : MonoBehaviour {
 			rotatedVelVector = Vector3.RotateTowards (rb.velocity, towardVectorGlobalAtMag, 1.570796f * maxTurnFactor/90.0f, 0.0f);
 			thrustVector = rotatedVelVector - rb.velocity;
 			rb.AddForce (thrustVector);
+			powerUsed = powerUsed + Vector3.Magnitude(thrustVector);
 			rotationVector = torqueFactor * new Vector3 (0.0f, 0.0f, moveRoll);
 			rb.AddRelativeTorque (rotationVector);
 		}
@@ -97,8 +122,6 @@ public class JetControl2 : MonoBehaviour {
 		}
 
 		//Check for Boundary Proximity
-
-			
 
 		CollisionRay = new Ray(transform.position,rb.transform.forward);
 		if (Physics.Raycast (CollisionRay, out hitInfo, 1500)) {
@@ -113,6 +136,23 @@ public class JetControl2 : MonoBehaviour {
 			}
 		}
 
+		//Populate Dashboard
+		speedText.text = Mathf.RoundToInt(shipspeed).ToString() + ",000 km/s";
+		powerText.text = Mathf.RoundToInt (powerUsed).ToString ();
+		currentLocation = rb.position;
+		distanceTraveled = distanceTraveled + Vector3.Magnitude (currentLocation - previousLocation);
+		previousLocation = currentLocation;
+		distText.text = Mathf.RoundToInt (distanceTraveled).ToString () + ",000 km";
+		minutes = Mathf.FloorToInt (Time.time / 60);
+		if (minutes < 1) {
+			seconds = Mathf.RoundToInt(Time.time);
+		} else {
+			seconds = Mathf.RoundToInt(Time.time - minutes * 60);
+		}
+		timeText.text = minutes.ToString() + " : " + seconds.ToString();
+
+
+
 
 
 
@@ -124,12 +164,12 @@ public class JetControl2 : MonoBehaviour {
 		//displayText.text = "moveThrust: " + moveThrust.ToString() + "  speedchange: "+ speedchange.ToString() + "  Speed: "+ Vector3.Magnitude(rb.velocity).ToString();
 		//displayText.text = "shipspeed " + shipspeed.ToString() + "  thrustVector "+ thrustVector.ToString() + " mag.thrustVector: " + Vector3.Magnitude(thrustVector).ToString();
 		//displayText.text = "shipspeed " + shipspeed.ToString () + "  rotatedVelVector: " + rotatedVelVector.ToString () + " mag.thrustVector: " + Vector3.Magnitude(thrustVector).ToString() + " mag.towardVector: " + Vector3.Magnitude(towardVectorGlobal).ToString();
-		displayText.text = "shipspeed: " + shipspeed.ToString () +
-		" towardVectorLocal: " + towardVectorLocal.ToString () +
-		" towardVectorGlobal: " + towardVectorGlobal.ToString () +
-		" towardVectorGlobalAtMag: " + towardVectorGlobalAtMag.ToString () +
-		" rotatedVector: " + rotatedVelVector.ToString () +
-		" thrustVector: " + thrustVector.ToString();
+		//displayText.text = "shipspeed: " + shipspeed.ToString () +
+		//" towardVectorLocal: " + towardVectorLocal.ToString () +
+		//" towardVectorGlobal: " + towardVectorGlobal.ToString () +
+		//" towardVectorGlobalAtMag: " + towardVectorGlobalAtMag.ToString () +
+		//" rotatedVector: " + rotatedVelVector.ToString () +
+		//" thrustVector: " + thrustVector.ToString();
 
 		// Check for application quit
 
